@@ -48,7 +48,7 @@ internal MCMC computations. WinBUGS is not required or supported anymore.
 Before being able to run anything, you have to load the package with
 ```{r, load_crmPack}
 library(crmPack)
-library(data.tree)
+
 ```
 
 For browsing the help pages for the package, it is easiest to start the web
@@ -63,16 +63,11 @@ The whole R-package is built in a modular form, by using S4 classes and methods.
 
 # Data
 
-```{r, fig.cap="Data classes structure"}
-df <- data.frame(
-  pathString = c(
-    "GeneralData/Data/DataDual"
-  )
-)
-
-tree <- as.Node(df)
-SetNodeStyle(tree, shape = "box")
-plot(tree)
+```{r data-classes, echo = FALSE, fig.cap = "Data classes structure", fig.align = "center"}
+# Source code for image creation is in /vignettes/example_image_creation.R
+# This applies elsewhere in this vignette as well.
+# See issue 841 [https://github.com/openpharma/crmPack/issues/841]
+include_graphics("images/example_Data_classes_structure.png")
 ```
 
 We have three data classes for this package. The parent class is the `GeneralData` class. The `Data` class is inheriting from the `GeneralData` class and the `DataDual` class is inheriting from the `Data` class. Inheritance means that the subclass has all the slots (attributes) of the parent class, but can also have additional slots. Methods that work on the parent class also work the same way on the subclass, unless a specialized method for the subclass has been defined.
@@ -140,21 +135,8 @@ Figure \@ref(fig:model-classes) shows the structure of the model class defined i
 computational purposes. All models included in this package will have a parent class of either the `GeneralModel` or the `ModelPseudo` classes. There are two further classes under `ModelPseudo` which are the `ModelTox` class include all DLT (the occurrence of a dose-limiting toxicity) class models, and class `ModelEff` which includes all efficacy class models.
 
 ```{r model-classes, echo = FALSE, fig.cap = "Model classes structure", fig.width = 6}
-library(data.tree)
-df <- data.frame(
-  pathString = c(
-    "AllModels/GeneralModel/Model/LogisiticNormal",
-    "AllModels/GeneralModel/Model/LogisticLogNormalSub",
-    "AllModels/GeneralModel/Model/LogisiticKadane",
-    "AllModels/ModelPseudo/ModelEff/Effloglog",
-    "AllModels/ModelPseudo/ModelEff/EffFlexi",
-    "AllModels/ModelPseudo/ModelTox/LogisticIndepBeta"
-  )
-)
 
-tree <- as.Node(df)
-SetNodeStyle(tree, shape = "box")
-plot(tree)
+include_graphics("images/example_Model_classes_structure.png")
 ```
 
 # Model setup
@@ -544,16 +526,7 @@ and `Stopping-class`.
 Figure \@ref(fig:increments) shows the structure of the `Increments` classes:
 
 ```{r increments, fig.cap = "Increments classes structure", echo = FALSE}
-df <- data.frame(
-  pathString = c(
-    "Increments/IncrementsRelative/IncrementsRelativeParts",
-    "Increments/IncrementsRelativeDLT"
-  )
-)
-
-tree <- as.Node(df)
-SetNodeStyle(tree, shape = "box")
-plot(tree)
+include_graphics("images/example_Increments_classes_structure.png")
 ```
 
 The `Increments` class is the basis for all maximum increments rule classes within this package. There are three subclasses, the `IncrementsRelative`, the `IncrementsRelativeParts` and the `IncrementsRelativeDLTs` classes.
@@ -604,25 +577,10 @@ The `IncrementsRelativeDLT` class works similarly, taking the number of DLTs in 
 Figure \@ref(fig:rules) show the structure of the next best dose recommendation rules currently implemented in `crmPack`.
 
 ```{r rules, fig.width=6, fig.cap="Escalation classes structure", echo = FALSE}
-df <- data.frame(
-  pathString = c(
-    "NextBest/NextBestMTD",
-    "NextBest/NextBestNCRM",
-    "NextBest/NextBestThreePlusThree",
-    "NextBest/NextBestDualEndpoint",
-    "NextBest/NextBestTD",
-    "NextBest/NextBestTDSamples",
-    "NextBest/NextBestMaxGain",
-    "NextBest/NextBestMaxGainSamples"
-  )
-)
-
-tree <- as.Node(df)
-SetNodeStyle(tree, shape = "box")
-plot(tree)
+include_graphics("images/example_Escalation_classes_structure.png")
 ```
-All classes of escalation rules are contained in the `nextBest` class. There are two main types of escalation rules: either only the binary DLT responses are incorporated into the escalation process, or a binary DLT and a continuous efficacy/biomarker response are jointly incorporated into the escalation process.
 
+All classes of escalation rules are contained in the `nextBest` class. There are two main types of escalation rules: either only the binary DLT responses are incorporated into the escalation process, or a binary DLT and a continuous efficacy/biomarker response are jointly incorporated into the escalation process.
 
 There are two implemented rules for toxicity endpoint CRMs inheriting from the `GeneralModel` class: `NextBestMTD`
 that uses the posterior distribution of the MTD estimate (given a target
@@ -744,22 +702,10 @@ In the plot, vertical lines are given to show the value for the next dose, the T
 
 ## Cohort size rules
 
-```{r cohort-size, fig.cap="CohortSize classes structure", fig.width=6}
-df <- data.frame(
-  pathString = c(
-    "CohortSize/CohortSizeRange",
-    "CohortSize/CohortSizeDLT",
-    "CohortSize/CohortSizeConst",
-    "CohortSize/CohortSizeParts",
-    "CohortSize/CohortSizeMax",
-    "CohortSize/CohortSizeMin"
-  )
-)
-
-tree <- as.Node(df)
-SetNodeStyle(tree, shape = "box")
-plot(tree)
+```{r cohort-size, fig.cap="CohortSize classes structure", fig.width=6, echo = FALSE}
+include_graphics("images/example_CohortSize_classes_structure.png")
 ```
+
 % All classes related to cohort size in this package are contains within `CohortSize` class.
 
 Similarly to the increments rules, you can define intervals in the dose space
@@ -898,17 +844,7 @@ comprises a model, the escalation rules, starting data, a cohort size and a star
 
 The structure of the design classes in this package is shown in figure \@ref(fig:Design).
 ```{r Design, fig.width=6, fig.cap="Design classes structure", echo = FALSE}
-df <- data.frame(
-  pathString = c(
-    "RuleDesign/Design/DualDesign",
-    "RuleDesign/TDDesign/DualResponsesDesign",
-    "RuleDesign/TDSamplesDesign/DualResponsesTDSamplesDesign"
-  )
-)
-
-tree <- as.Node(df)
-SetNodeStyle(tree, shape = "box")
-plot(tree)
+include_graphics("images/example_Design_classes_structure.png")
 ```
 
 It might seem strange at first sight that we have to supply starting data to the design, but we will show below that this makes sense. First, we use our `emptydata` object that only
